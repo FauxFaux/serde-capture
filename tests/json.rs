@@ -23,7 +23,7 @@ struct JustValue {
 }
 
 #[test]
-fn foo() -> Result<(), Error> {
+fn smoke() -> Result<(), Error> {
     let src = serde_json::to_string_pretty(&json!(
     {
         "foo": {
