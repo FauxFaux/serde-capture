@@ -4,6 +4,11 @@ version = "0.1.0"
 authors = ["Chris West (Faux) <git@goeswhere.com>"]
 edition = "2018"
 
+description = "'Skip' deserialisation, but extract some, and retain the rest for later"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/FauxFaux/serde-capture"
+
 [dependencies]
 serde = "1"
 serde_derive = "1"
