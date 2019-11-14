@@ -42,17 +42,3 @@ impl<'de, T: Deserialize<'de>> Deserialize<'de> for Capture<T> {
         })
     }
 }
-
-//pub struct Remainder<R: Deserialize<'static>> {
-//    bytes: Box<[u8]>,
-//    _real_work: PhantomData<R>,
-//}
-//
-//
-//impl<'de, R: Deserialize<'static>> Deserialize<'de> for Remainder<R> {
-//    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> where
-//        D: Deserializer<'de> {
-//        R::deserialize(deserializer);
-//        Ok(Remainder { bytes: Box::new([]), _real_work: PhantomData::default() })
-//    }
-//}
