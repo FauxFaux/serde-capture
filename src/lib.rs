@@ -1,19 +1,21 @@
-use std::fmt;
-use std::marker::PhantomData;
-
 use serde::de::Error;
 use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
+use serde_derive::Deserialize;
 
-pub struct Capture<T> {
-    pub extracted: T,
+#[derive(Clone, Hash, Eq, PartialEq)]
+pub struct CaptureJson<T> {
+    pub inner: T,
     pub bytes: Box<[u8]>,
 }
 
-impl<T> Capture<T> {
-    pub fn into_extracted(self) -> T {
-        self.extracted
+#[derive(Deserialize)]
+pub struct Nothing {}
+
+impl<T> CaptureJson<T> {
+    pub fn into_inner(self) -> T {
+        self.inner
     }
 
     pub fn into_bytes(self) -> Box<[u8]> {
@@ -21,7 +23,7 @@ impl<T> Capture<T> {
     }
 }
 
-impl<'de, T: Deserialize<'de>> Deserialize<'de> for Capture<T> {
+impl<'de, T: Deserialize<'de>> Deserialize<'de> for CaptureJson<T> {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
@@ -36,9 +38,9 @@ impl<'de, T: Deserialize<'de>> Deserialize<'de> for Capture<T> {
         let extracted = T::deserialize(inner)
             .map_err(|e| D::Error::custom(format!("extraction failed: {:?}", e)))?;
 
-        Ok(Capture {
+        Ok(CaptureJson {
             bytes: bytes.into_boxed_slice(),
-            extracted,
+            inner: extracted,
         })
     }
 }
